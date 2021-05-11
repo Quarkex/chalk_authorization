@@ -47,7 +47,21 @@ field :permissions, {:map, :integer}, default: %{}, null: false
 ```
 
 Please remember to include migrations to add these to the database if there are
-not present already.
+not present already:
+
+```elixir
+defmodule MyApp.Repo.Migrations.AddUserAuthorizationFields do
+  use Ecto.Migration
+
+  def change do
+    alter table(:users) do
+      add :superuser, :boolean, default: false, null: false
+      add :groups, {:array, :string}, default: [], null: false
+      add :permissions, {:map, :integer}, default: "{}", null: false
+    end
+  end
+end
+```
 
 ## Usage
 
