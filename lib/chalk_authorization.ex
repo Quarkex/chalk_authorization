@@ -19,6 +19,9 @@ quote do
   def can?(nil, _action, _element),
   do: false
 
+  def can?(user, permission, element) when is_atom(element),
+  do: can?(user, permission, Atom.to_string(element))
+
   def can?(user, permission, element) when is_atom(permission),
   do: can?(user, Atom.to_string(permission), element)
 
@@ -33,7 +36,7 @@ quote do
 
   def can?(user, permission, element),
   do: user
-  |> get_permissions(Atom.to_string element)
+  |> get_permissions(element)
   |> permissions_int_to_string
   |> String.contains?(permission)
 

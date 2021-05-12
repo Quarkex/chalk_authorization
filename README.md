@@ -14,7 +14,8 @@ in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:chalk_authorization, "~> 0.1.0"}
+    {:chalk_authorization, "~> 0.1.1"},
+    ...
   ]
 end
 ```
