@@ -29,13 +29,13 @@ defmodule ChalkAuthorization do
   defmacro __using__(repo: repo, group_permissions: group_permissions) do
     quote do
       @doc """
-      The translation between a permission and it's integer representation
+      Get the translation between a permission and its integer representation
       """
       def permission_map,
         do: Application.get_env(:chalk_authorization, :permission_map, %{c: 1, r: 2, u: 4, d: 8})
 
       @doc """
-      The changeset for update permissions.
+      Get the changeset to update the permissions.
       """
       def permissions_changeset(item, attrs),
         do: cast(item, attrs, [:superuser, :groups, :permissions])
