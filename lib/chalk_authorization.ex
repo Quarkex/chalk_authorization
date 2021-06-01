@@ -19,8 +19,14 @@ defmodule ChalkAuthorization do
       def permissions_changeset(item, attrs),
         do: cast(item, attrs, [:superuser, :groups, :permissions])
 
-      @doc nil
-      def can?(nil, _action, _element),
+      @doc """
+      Check if a user has permission to perform an action on a specific element.
+
+      `user` can be a `map` or `nil`. `permission` and `element`, both can be an atom or a string.
+
+      It returns `true` or `false`.
+      """
+      def can?(nil, _permission, _element),
         do: false
 
       def can?(user, permission, element) when is_atom(permission),
