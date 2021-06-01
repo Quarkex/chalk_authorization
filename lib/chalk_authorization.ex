@@ -5,6 +5,27 @@ defmodule ChalkAuthorization do
   It is inspired in the Unix file permissions.
   """
 
+  @doc """
+  Chalk integrates the next functions to handle the authorization system.
+
+  ## `permission_map`
+
+  Get the translation between a permission and its integer representation.
+
+  ## `permission_changeset(item, attrs)`
+
+  Get the changeset to update the permissions.
+
+  * `item` can be an atom or a string.
+  * `attrs` can be a...
+
+  ## `can?(user, permission, element)`
+
+  Check if a user has permission to perform an action on a specific element.
+
+  * `user` can be a map or nil.
+  * `permission` and `element`, both can be an atom or a string.
+  """
   defmacro __using__(repo: repo, group_permissions: group_permissions) do
     quote do
       @doc """
