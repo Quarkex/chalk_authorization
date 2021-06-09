@@ -36,6 +36,10 @@ defmodule ChalkAuthorization do
 
       @doc """
       Get the changeset to update the permissions.
+
+      `item` can be an atom or a string.
+
+      `attrs` can be a map.
       """
       def permissions_changeset(item, attrs),
         do: cast(item, attrs, [:superuser, :groups, :permissions])
