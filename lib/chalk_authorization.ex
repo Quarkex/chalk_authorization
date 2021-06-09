@@ -307,6 +307,13 @@ defmodule ChalkAuthorization do
         end
       end
 
+      @doc """
+      Grant or revoke a user the role of superuser (all permissions).
+
+      `user` can be a map. `boolean` can be `true` or `false`.
+
+      Returns `true` or `false`.
+      """
       def set_superuser(%{superuser: _} = user, boolean) when is_boolean(boolean),
         do:
           user
