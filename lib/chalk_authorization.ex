@@ -74,7 +74,14 @@ defmodule ChalkAuthorization do
           |> permissions_int_to_string
           |> String.contains?(permission)
 
-      @doc nil
+      @doc """
+      Get the permissions of a specific group and upgrade the user's permissions
+      according to the ones given to the group.
+
+      `user` can be a map and `group` an atom.
+
+      Returns a map with the user, the user's permissions and the group's permissions.
+      """
       defp get_group_permissions(),
         do: unquote(group_permissions) || %{}
 
