@@ -209,7 +209,14 @@ defmodule ChalkAuthorization do
       def is_a?(%{groups: groups}, group),
         do: Enum.member?(groups, group)
 
-      @doc nil
+      @doc """
+      Grant permissions to a user on an item.
+
+      `user` can be a map. `element` can be an atom or a string. `value` can
+      be an integer or a string.
+
+      Returns the `repo` updated or an error.
+      """
       def set_permissions(user, element, value) when is_atom(element),
         do: set_permissions(user, Atom.to_string(element), value)
 
