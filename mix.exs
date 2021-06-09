@@ -4,7 +4,7 @@ defmodule ChalkAuthorization.MixProject do
   def project do
     [
       app: :chalk_authorization,
-      version: "0.1.0",
+      version: "0.1.1",
       description: "Authorization system with role support",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
