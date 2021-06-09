@@ -254,6 +254,13 @@ defmodule ChalkAuthorization do
       end
 
       @doc nil
+      @doc """
+      Convert a string of permissions into an integer.
+
+      `string` can be a string.
+
+      Returns an integer.
+      """
       defp permissions_string_to_int(string) do
         string
         |> String.graphemes()
