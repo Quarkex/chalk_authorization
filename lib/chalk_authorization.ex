@@ -193,7 +193,13 @@ defmodule ChalkAuthorization do
           |> unquote(repo).update()
           |> elem(1)
 
-      @doc nil
+      @doc """
+      Check if the user is in a specific group.
+
+      `user` can be a map. `groups` can be a string, a bitstring or a list of groups.
+
+      Returns `true` or `false`.
+      """
       def is_a?(user, groups) when is_list(groups),
         do: groups |> Enum.all?(fn g -> user |> is_a?(g) end)
 
