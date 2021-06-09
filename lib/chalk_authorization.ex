@@ -168,7 +168,13 @@ defmodule ChalkAuthorization do
           |> unquote(repo).update()
           |> elem(1)
 
-      @doc nil
+      @doc """
+      Remove a user from a specific group.
+
+      `user` can be a map. `group` can be a string, a bitstring or a list of groups.
+
+      Returns the group or groups added to the user.
+      """
       def remove_group(user, []),
         do: user
 
