@@ -143,7 +143,13 @@ defmodule ChalkAuthorization do
             else: 0
           )
 
-      @doc nil
+      @doc """
+      Add a user to a specific group.
+
+      `user` can be a map. `group` can be a string or a list of groups.
+
+      Returns the group or groups added to the user.
+      """
       def add_group(user, []),
         do: user
 
