@@ -94,6 +94,16 @@ defmodule ChalkAuthorization do
             else: user
           )
 
+      @doc """
+      Upgrade the users permissions according to the ones given to the group.
+
+      If the user has higher permissions than the group given or the user is in
+      a group with higher permissions, the permissions aren't upgraded.
+
+      `permissions` can be a map. `group_permissions` can be a map or a list.
+
+      Returns a map with the permissions.
+      """
       defp upgrade_to_group(%{permissions: permissions} = user, group_permissions),
         do:
           Map.put(
