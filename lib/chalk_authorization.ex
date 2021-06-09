@@ -269,7 +269,17 @@ defmodule ChalkAuthorization do
         |> Enum.sum()
       end
 
-      @doc nil
+      @doc """
+      Convert an integer permission into a string.
+
+      `int` and `rest` can be an integer.
+
+      The second parameter is a list.
+
+      `acc` can be a list.
+
+      Returns a string with the permissions or an error.
+      """
       defp permissions_int_to_string(int) when is_integer(int) do
         keys =
           Map.keys(permission_map())
