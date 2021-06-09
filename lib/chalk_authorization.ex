@@ -126,7 +126,13 @@ defmodule ChalkAuthorization do
               |> upgrade_to_group(group_permissions)
           )
 
-      @doc nil
+      @doc """
+      Get the permissions of a user on an element.
+
+      `user` can be a map. `element` can be an atom or a string.
+
+      Returns the permission of the user or `0`.
+      """
       def get_permissions(user, element) when is_atom(element),
         do: get_permissions(user, Atom.to_string(element))
 
