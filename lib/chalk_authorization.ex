@@ -74,13 +74,9 @@ defmodule ChalkAuthorization do
           |> permissions_int_to_string
           |> String.contains?(permission)
 
-      @doc """
-      Get the permissions of a specific group and upgrade the user's permissions
-      according to the ones given to the group.
-
-      `user` can be a map and `group` an atom.
-
-      Returns a map with the user, the user's permissions and the group's permissions.
+      """
+      Get the permissions of a specific group and upgrade the user's
+      permissions according to the ones given to the group.
       """
       defp get_group_permissions(),
         do: unquote(group_permissions) || %{}
@@ -94,15 +90,11 @@ defmodule ChalkAuthorization do
             else: user
           )
 
-      @doc """
-      Upgrade the users permissions according to the ones given to the group.
-
-      If the user has higher permissions than the group given or the user is in
-      a group with higher permissions, the permissions aren't upgraded.
-
-      `permissions` can be a map. `group_permissions` can be a map or a list.
-
-      Returns a map with the permissions.
+      """
+      Upgrade the users permissions according to the ones given
+      to the group. If the user has higher permissions than the
+      group given or the user is in a group with higher permissions,
+      the permissions aren't upgraded.
       """
       defp upgrade_to_group(%{permissions: permissions} = user, group_permissions),
         do:
@@ -253,13 +245,8 @@ defmodule ChalkAuthorization do
         end
       end
 
-      @doc nil
-      @doc """
+      """
       Convert a string of permissions into an integer.
-
-      `string` can be a string.
-
-      Returns an integer.
       """
       defp permissions_string_to_int(string) do
         string
@@ -269,16 +256,8 @@ defmodule ChalkAuthorization do
         |> Enum.sum()
       end
 
-      @doc """
+      """
       Convert an integer permission into a string.
-
-      `int` and `rest` can be an integer.
-
-      The second parameter is a list.
-
-      `acc` can be a list.
-
-      Returns a string with the permissions or an error.
       """
       defp permissions_int_to_string(int) when is_integer(int) do
         keys =
