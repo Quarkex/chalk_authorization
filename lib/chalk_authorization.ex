@@ -16,15 +16,73 @@ defmodule ChalkAuthorization do
 
   Get the changeset to update the permissions.
 
-  * `item` can be an atom or a string.
-  * `attrs` can be a...
+  - `item` can be an atom or a string.
+  - `attrs` can be a...
 
   ## `can?(user, permission, element)`
 
   Check if a user has permission to perform an action on a specific element.
 
-  * `user` can be a map or nil.
-  * `permission` and `element`, both can be an atom or a string.
+  ### Parameters
+
+  - `user` can be a map or nil.
+  - `permission` and `element`, both can be an atom or a string.
+  
+  ## `get_permissions(user, element)`
+
+  Get the permissions of a user on an element.
+
+  ### Parameters
+  
+  - `user` can be a map.
+  - `element` can be an atom or a string.
+
+  ## `add_group(user, group)`
+  
+  Add a user to a specific group.
+
+  ### Parameters
+  
+  - `user` can be a map.
+  - `group` can be a string or a list of groups.
+
+  ## `remove_group(user, group)
+  
+  Add a user to a specific group.
+
+  ### Parameters
+      
+  - `user` can be a map.
+  - `group` can be a string or a list of groups.
+
+  ## `is_a?(user, group)
+
+  Check if the user is in a specific group.
+
+  ### Parameters
+
+  - `user` can be a map.
+  - `groups` can be a string, a bitstring or a list of groups.
+
+  ## set_permissions(user, element)
+  
+  Grant permissions to a user on an item.
+
+  ### Parameters
+
+  - `user` can be a map.
+  - `element` can be an atom or a string. `value` can 
+  be an integer or a string.
+
+  ## set_superuser(user, boolean)
+
+  Grant or revoke a user the role of superuser (all permissions).
+
+  ### Parameters
+  
+  - `user` can be a map.
+  - `boolean` can be `true` or `false`.
+
   """
   defmacro __using__(repo: repo, group_permissions: group_permissions) do
     quote do
@@ -327,7 +385,8 @@ defmodule ChalkAuthorization do
 
       ## Parameters
       
-      - `user` can be a map. `boolean` can be `true` or `false`.
+      - `user` can be a map.
+      - `boolean` can be `true` or `false`.
 
       ## Returns
       
