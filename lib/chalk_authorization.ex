@@ -37,9 +37,10 @@ defmodule ChalkAuthorization do
       @doc """
       Get the changeset to update the permissions.
 
-      `item` can be an atom or a string.
+      ## Parameters
 
-      `attrs` can be a map.
+      - `item`: can be an atom or a string.
+      - `attrs`: can be a map.
       """
       def permissions_changeset(item, attrs),
         do: cast(item, attrs, [:superuser, :groups, :permissions])
@@ -47,9 +48,15 @@ defmodule ChalkAuthorization do
       @doc """
       Check if a user has permission to perform an action on a specific element.
 
-      `user` can be a `map` or `nil`. `permission` and `element`, both can be an atom or a string.
+      ## Parameters
 
-      It returns `true` or `false`.
+      - `user`: can be a map or `nil`.
+      - `permission`: can be an atom or a string.
+      - `element`: can be an atom or a string.
+
+      ## Returns
+
+      `true` or `false`.
       """
       def can?(nil, _permission, _element),
         do: false
@@ -78,6 +85,7 @@ defmodule ChalkAuthorization do
       Get the permissions of a specific group and upgrade the user's
       permissions according to the ones given to the group.
       """
+
       defp get_group_permissions(),
         do: unquote(group_permissions) || %{}
 
@@ -96,6 +104,7 @@ defmodule ChalkAuthorization do
       group given or the user is in a group with higher permissions,
       the permissions aren't upgraded.
       """
+
       defp upgrade_to_group(%{permissions: permissions} = user, group_permissions),
         do:
           Map.put(
@@ -121,9 +130,14 @@ defmodule ChalkAuthorization do
       @doc """
       Get the permissions of a user on an element.
 
-      `user` can be a map. `element` can be an atom or a string.
+      ## Parameters
+      
+      - `user` can be a map.
+      - `element` can be an atom or a string.
 
-      Returns the permission of the user or `0`.
+      ## Returns
+
+      The permission of the user or `0`.
       """
       def get_permissions(user, element) when is_atom(element),
         do: get_permissions(user, Atom.to_string(element))
@@ -138,9 +152,14 @@ defmodule ChalkAuthorization do
       @doc """
       Add a user to a specific group.
 
-      `user` can be a map. `group` can be a string or a list of groups.
+      ## Parameters
+      
+      - `user` can be a map.
+      - `group` can be a string or a list of groups.
 
-      Returns the group or groups added to the user.
+      ## Returns
+
+      The group or groups added to the user.
       """
       def add_group(user, []),
         do: user
@@ -163,9 +182,14 @@ defmodule ChalkAuthorization do
       @doc """
       Remove a user from a specific group.
 
-      `user` can be a map. `group` can be a string, a bitstring or a list of groups.
+      ## Parameters
 
-      Returns the group or groups added to the user.
+      - `user` can be a map.
+      - `group` can be a string, a bitstring or a list of groups.
+
+      ## Returns
+
+      The group or groups added to the user.
       """
       def remove_group(user, []),
         do: user
@@ -188,9 +212,14 @@ defmodule ChalkAuthorization do
       @doc """
       Check if the user is in a specific group.
 
-      `user` can be a map. `groups` can be a string, a bitstring or a list of groups.
+      ## Parameters
 
-      Returns `true` or `false`.
+      - `user` can be a map.
+      - `groups` can be a string, a bitstring or a list of groups.
+
+      ## Returns
+
+      `true` or `false`.
       """
       def is_a?(user, groups) when is_list(groups),
         do: groups |> Enum.all?(fn g -> user |> is_a?(g) end)
@@ -204,10 +233,15 @@ defmodule ChalkAuthorization do
       @doc """
       Grant permissions to a user on an item.
 
-      `user` can be a map. `element` can be an atom or a string. `value` can
+      ## Parameters
+
+      - `user` can be a map.
+      - `element` can be an atom or a string. `value` can 
       be an integer or a string.
 
-      Returns the `repo` updated or an error.
+      ## Returns
+
+      The `repo` updated or an error.
       """
       def set_permissions(user, element, value) when is_atom(element),
         do: set_permissions(user, Atom.to_string(element), value)
@@ -248,6 +282,7 @@ defmodule ChalkAuthorization do
       """
       Convert a string of permissions into an integer.
       """
+
       defp permissions_string_to_int(string) do
         string
         |> String.graphemes()
@@ -259,6 +294,7 @@ defmodule ChalkAuthorization do
       """
       Convert an integer permission into a string.
       """
+
       defp permissions_int_to_string(int) when is_integer(int) do
         keys =
           Map.keys(permission_map())
@@ -289,9 +325,13 @@ defmodule ChalkAuthorization do
       @doc """
       Grant or revoke a user the role of superuser (all permissions).
 
-      `user` can be a map. `boolean` can be `true` or `false`.
+      ## Parameters
+      
+      - `user` can be a map. `boolean` can be `true` or `false`.
 
-      Returns `true` or `false`.
+      ## Returns
+      
+      `true` or `false`.
       """
       def set_superuser(%{superuser: _} = user, boolean) when is_boolean(boolean),
         do:
