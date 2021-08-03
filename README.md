@@ -1,5 +1,7 @@
 # Chalk Authorization
 
+![Hex.pm](https://img.shields.io/hexpm/v/chalk_authorization?style=for-the-badge)
+
 Chalk is yet another authorization module with support for roles. It can handle
 configurable custom actions and permissions, and also user and group based
 authorization. If you look for some similar to unix file permissions, this
