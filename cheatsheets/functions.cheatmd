@@ -1,0 +1,176 @@
+# Functions
+
+`ChalkAuthorization` injects its functions into the module in which it is
+used. This cheatsheet aims to provide documentation for these functions.
+The functions are documented and can be accesed in `iex` using `h`, as in
+the next example:
+
+```iex
+iex> h App.Accounts.User.can?
+
+def is_a?(user, groups)
+
+Checks if a user belongs to the given groups.
+```
+
+Thus in addition ChalkAuthorization provides this cheatsheet. 
+
+TODO: extract the documentation from the `__using__` macro into this cheatsheet.
+
+## Predicates
+
+### `can?/3`
+
+Checks if a given user has permission to perform an specific action into an element.
+
+#### Parameters
+{: .list-2}
+
+- `user` must be a specific user representation (e.g., a struct or changeset).
+- `permission` is the atom of the CRUD action (`:c`, `:r`, `:u`, `:d`). **Note**:
+if you change your permission map, it will be the ones you set.
+- `element` is an atom or a string that represents the action.
+
+#### Example
+
+Given the next `group_permissions` included in our model with the `use ChalkAuthorization`:
+
+```elixir
+  use ChalkAuthorization,
+  repo: App.Repo,
+  group_permissions: %{
+    "administrator" => %{
+      "read_only_resource" => 15,
+      "restricted_resource" => 6,
+      "users_management" => 7,
+    },
+    "user" => %{
+      "read_only_resource" => 2,
+      "users_management" => 2,
+    }
+  }
+```
+
+And supposing `user` belongs to "user" group, we can if the user can perform
+a create action into `read_only_resource`: 
+
+```iex
+iex> App.Accounts.User.can?(user, :c, "read_only_resource")
+false
+```
+
+Although the user can't create, the user can read the element!
+
+```iex
+iex> App.Accounts.User.can?(user, :r, "read_only_resource")
+true
+```
+
+If the user is a "superuser" (`user.superuser = true`), then the user
+can perform any action on any element no matter what groups the user
+belongs.
+
+In this case, `can/3` will always return `true`.
+
+### `is_a?/2`
+
+Checks if a given user belongs to a group or groups.
+
+#### Parameters
+{: .list-2}
+
+- `user` must be a specific user representation (e.g., a struct or changeset).
+- `groups` can be a single group (a string) or more than one group (a list of strings).
+
+#### Example
+
+It is possible to check if a user belongs to a single group:
+
+```iex
+iex> App.Accounts.User.is_a?(user, "administrator")
+false
+iex> App.Accounts.User.is_a?(user, "guest")
+true
+```
+
+It is also possible to check if a user belongs to multiple groups:
+
+```iex
+iex> App.Accounts.User.is_a?(user, ["administrator", "guest"])
+false
+```
+
+If the user only belongs to one of them, the `is_a?/3` function returns
+`false`. `is_a/3` only returns `true` when it is an exact match.
+
+## Permissions
+
+### `permission_map/0`
+
+Returns the permissions map and its integer representation.
+
+```iex
+iex> App.Accounts.User.permission_map()
+%{c: 1, d: 8, r: 2, u: 4}
+```
+
+Although it is not recommended to alter this, it is allowed reconfiguring
+the permissions map in the configuration file of your project (e.g., `config/config.exs`):
+
+#### `config/config.exs`
+
+```elixir
+config :chalk_authorization,
+    permission_map: %{
+    r: 1,
+    w: 2,
+    x: 4
+    }
+```
+
+#### `iex`
+
+```iex
+iex> App.Accounts.User.permission_map()
+%{r: 1, w: 2, x: 4}
+```
+
+### `permission_changeset/2`
+
+> #### Warning {: .warning}
+>
+> This function is intended to be used internally by `ChalkAuthorization`, but
+> it can be use to extend your code.
+
+This function returns the required changeset to update the permissions
+of a specific user.
+
+#### Parameters
+{: .list-2}
+
+- `item` must be a specific user representation (e.g., a struct or changeset).
+- `attrs` can be a map with the new attributes.
+
+#### Usage
+
+```iex
+iex> user = App.Accounts.get_user_by_email("email@email.xyz")     
+#App.Accounts.User<
+  __meta__: #Ecto.Schema.Metadata<:loaded, "users">,
+  id: 1,
+  email: "email@email.xyz",
+  superuser: false,
+  groups: ["administrator"],
+  permissions: %{},
+  ...
+>
+iex> App.Accounts.User.permissions_changeset(user, %{"groups" => [
+"guest"]})
+#Ecto.Changeset<
+  action: nil,
+  changes: %{groups: ["guest"]},
+  errors: [],
+  data: #App.Accounts.User<>,
+  valid?: true
+>
+```

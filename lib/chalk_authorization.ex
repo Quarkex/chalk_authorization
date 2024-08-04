@@ -1,11 +1,40 @@
 defmodule ChalkAuthorization do
   @moduledoc """
-  Chalk is an authorization module with support for roles that can handle configurable custom actions and permissions. It also supports user and group based authorization.
+  Chalk is an authorization module with support for roles that can handle configurable
+  custom actions and permissions. It also supports user and group based authorization.
 
-  It is inspired in the Unix file permissions.
+  It is inspired in the UNIX file permissions.
+
+  `ChalkAuthorization` provides the next:
+  - `can?/3` to check if the user is allowed to perform an specific
+  action on a specific element.
+  - `is_a?/2` to check if the user belongs to a specific group.
+  - A set of functions to manage the user's permissions and groups.
+
+  ## Implementing `ChalkAuthorization`
+
+  Once you installed the package, you can add it to any model.
+  `ChalkAuthorization` is developed with Ecto in mind, although it may
+  be possible to adapt it to use other solutions.
+
+  See the ["Setup" section on the README](readme.html#setup).
+
+  ## `opts` parameters
+
+  Available options are:
+
+  - `repo`: it is mandatory to specify the Ecto's repository you want to use.
+  - `group_permissions`: it is mandatory to specify a map to indicate the groups,
+  their actions and what their members are allowed to do.
+
+  ## Usage
+
+  - TLDR: ["Usage" section on the README](readme.html#usage).
+  - Take a look at the [functions cheatsheet](functions.html).
   """
 
   @doc """
+  TODO: extract this documentation from the `__using__` macro into the cheatsheet `Functions`.
   Chalk integrates the next functions to handle the authorization system.
 
   ## `permission_map`
@@ -27,31 +56,31 @@ defmodule ChalkAuthorization do
 
   - `user` can be a map or nil.
   - `permission` and `element`, both can be an atom or a string.
-  
+
   ## `get_permissions(user, element)`
 
   Get the permissions of a user on an element.
 
   ### Parameters
-  
+
   - `user` can be a map.
   - `element` can be an atom or a string.
 
   ## `add_group(user, group)`
-  
+
   Add a user to a specific group.
 
   ### Parameters
-  
+
   - `user` can be a map.
   - `group` can be a string or a list of groups.
 
   ## `remove_group(user, group)
-  
+
   Add a user to a specific group.
 
   ### Parameters
-      
+
   - `user` can be a map.
   - `group` can be a string or a list of groups.
 
@@ -65,13 +94,13 @@ defmodule ChalkAuthorization do
   - `groups` can be a string, a bitstring or a list of groups.
 
   ## set_permissions(user, element)
-  
+
   Grant permissions to a user on an item.
 
   ### Parameters
 
   - `user` can be a map.
-  - `element` can be an atom or a string. `value` can 
+  - `element` can be an atom or a string. `value` can
   be an integer or a string.
 
   ## set_superuser(user, boolean)
@@ -79,7 +108,7 @@ defmodule ChalkAuthorization do
   Grant or revoke a user the role of superuser (all permissions).
 
   ### Parameters
-  
+
   - `user` can be a map.
   - `boolean` can be `true` or `false`.
 
@@ -95,7 +124,7 @@ defmodule ChalkAuthorization do
       @doc """
       Get the changeset to update the permissions.
 
-      ## Parameters
+      ### Parameters
 
       - `item`: can be an atom or a string.
       - `attrs`: can be a map.
@@ -189,7 +218,7 @@ defmodule ChalkAuthorization do
       Get the permissions of a user on an element.
 
       ## Parameters
-      
+
       - `user` can be a map.
       - `element` can be an atom or a string.
 
@@ -211,7 +240,7 @@ defmodule ChalkAuthorization do
       Add a user to a specific group.
 
       ## Parameters
-      
+
       - `user` can be a map.
       - `group` can be a string or a list of groups.
 
@@ -294,7 +323,7 @@ defmodule ChalkAuthorization do
       ## Parameters
 
       - `user` can be a map.
-      - `element` can be an atom or a string. `value` can 
+      - `element` can be an atom or a string. `value` can
       be an integer or a string.
 
       ## Returns
@@ -384,12 +413,12 @@ defmodule ChalkAuthorization do
       Grant or revoke a user the role of superuser (all permissions).
 
       ## Parameters
-      
+
       - `user` can be a map.
       - `boolean` can be `true` or `false`.
 
       ## Returns
-      
+
       `true` or `false`.
       """
       def set_superuser(%{superuser: _} = user, boolean) when is_boolean(boolean),

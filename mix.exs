@@ -9,7 +9,17 @@ defmodule ChalkAuthorization.MixProject do
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       package: package(),
-      deps: deps()
+      deps: deps(),
+      docs: [
+        main: "readme",
+        extras: [
+          "README.md",
+          "cheatsheets/functions.cheatmd",
+        ],
+        groups_for_extras: [
+          Cheatsheets: Path.wildcard("cheatsheets/*.cheatmd")
+        ]
+      ]
     ]
   end
 
@@ -21,7 +31,7 @@ defmodule ChalkAuthorization.MixProject do
 
   defp deps do
     [
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:ex_doc, ">= 0.27.0", only: :dev, runtime: false},
     ]
   end
 

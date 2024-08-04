@@ -2,7 +2,7 @@
 
 Chalk is yet another authorization module with support for roles. It can handle
 configurable custom actions and permissions, and also user and group based
-authorization. If you look for some similar to unix file permissions, this
+authorization. If you look for something similar to UNIX file permissions, this
 module is inspired by that.
 
 ## Installation
@@ -42,13 +42,13 @@ use ChalkAuthorization,
 Chalk does expect your model to include the following attributes:
 
 ```elixir
-field :superuser, :boolean, default: false, null: false
-field :groups, {:array, :string}, default: [], null: false
-field :permissions, {:map, :integer}, default: %{}, null: false
+field :superuser, :boolean, default: false
+field :groups, {:array, :string}, default: []
+field :permissions, {:map, :integer}, default: %{}
 ```
 
-Please remember to include migrations to add these to the database if there are
-not present already:
+You must include a migration to add these fields to the database
+if there are not present already:
 
 ```elixir
 defmodule MyApp.Repo.Migrations.AddUserAuthorizationFields do
@@ -66,15 +66,15 @@ end
 
 ## Usage
 
+Chalk follows the naming Elixir convention, so any function ending in "?" will return
+a boolean value.
+
 Once your models are configured you can ask them questions. I.E: if you add it
-to a "MyApp.User" model you may ask it if it's in the "staff" group like so:
+to a `MyApp.User` model you may ask it if it's in the "staff" group like so:
 
 ```elixir
 MyApp.User.is_a?(current_user, "staff")
 ```
-
-Chalk follows the "?" convention, any function ending in "?" will return "true"
-or "false" atoms.
 
 If instead you want to know if the current user is allowed to "create"
 something you may ask it as so:
@@ -90,7 +90,7 @@ This is configurable, by default the equivalences are:
 %{ c: 1, r: 2, u: 4, d: 8 }
 ```
 
-I recommend not to alther this, but if you must you can do so in the config
+I recommend not to alter this, but if you must, you can do so in the config
 files like this:
 
 ```elixir
@@ -105,5 +105,7 @@ files like this:
 Per-item resource based permissions are yet not included, but the
 implementation should be easy enough.
 
+### Phoenix Plug
+
 If you intent to use it with Phoenix Framework, [there is a plug for
-that](https://github.com/Quarkex/chalk_authorization_plug)
+that](https://github.com/Quarkex/chalk_authorization_plug).
